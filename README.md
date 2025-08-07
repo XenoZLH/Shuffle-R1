@@ -21,7 +21,7 @@ Experiments across multiple reasoning benchmarks demonstrate that our framework 
 **TL;DR:** We propose Shuffle-R1, a simple and effective RL post-training framework for MLLM that significantly improves RL training efficiency and model performance.
 
 ## Release
-Our official code is undergoing internal review and is expected to be officially open-sourced within one to two weeks. We will open source model checkpoints, training data, training/inference/evaluation scripts and everything! Please stay tuned!
+Our official code is undergoing internal review and is expected to be officially open-sourced within 1~2 weeks. We will open source model checkpoints, training data, training/inference/evaluation scripts and everything! Please stay tuned!
  - [ ] model checkpoints (3B and 7B)
  - [ ] datasets
  - [ ] training scripts
