@@ -2,7 +2,9 @@
 
 # Shuffle-R1: Efficient RL framework for Multimodal Large Language Models via Data-centric Dynamic Shuffle
 
-[![Paper](https://img.shields.io/badge/paper-A42C25?style=for-the-badge&logo=arxiv&logoColor=white)](https://github.com/XenoZLH/Shuffle-R1)
+[![Paper](https://img.shields.io/badge/paper-A42C25?style=flat&logo=arxiv&logoColor=white)](https://github.com/XenoZLH/Shuffle-R1) 
+[![Hugging Face Model](https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Model-blue)](https://github.com/XenoZLH/Shuffle-R1) 
+[![Hugging Face Dataset](https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Dataset-green)](https://github.com/XenoZLH/Shuffle-R1)
 
 </div>
 
