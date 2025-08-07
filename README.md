@@ -1,4 +1,10 @@
+<div align="center">
+
 # Shuffle-R1: Efficient RL framework for Multimodal Large Language Models via Data-centric Dynamic Shuffle
+
+[![Paper](https://img.shields.io/badge/paper-A42C25?style=for-the-badge&logo=arxiv&logoColor=white)](https://github.com/XenoZLH/Shuffle-R1)
+
+</div>
 
 Preview repository of **Shuffle-R1**.
 
@@ -58,6 +64,7 @@ Our work benefit from the following open-source projects:
 - [NoisyRollout](https://github.com/NUS-TRAIL/NoisyRollout)
 
 ## Citation
+If you find our works useful for your research, please consider citing:
 ```
 
 ```
