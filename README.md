@@ -2,9 +2,9 @@
 
 # Shuffle-R1: Efficient RL framework for Multimodal Large Language Models via Data-centric Dynamic Shuffle
 
-[![Paper](https://img.shields.io/badge/paper-A42C25?style=flat&logo=arxiv&logoColor=white)](https://github.com/XenoZLH/Shuffle-R1) 
-[![Hugging Face Model](https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Model-blue)](https://github.com/XenoZLH/Shuffle-R1) 
-[![Hugging Face Dataset](https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Dataset-green)](https://github.com/XenoZLH/Shuffle-R1)
+[![Paper](https://img.shields.io/badge/paper-A42C25?style=flat&logo=arxiv&logoColor=white)](https://arxiv.org/abs/2508.05612) 
+[![Hugging Face Model](https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Model-blue)](https://arxiv.org/abs/2508.05612) 
+[![Hugging Face Dataset](https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Dataset-green)](https://arxiv.org/abs/2508.05612)
 
 </div>
 
@@ -68,5 +68,13 @@ Our work benefit from the following open-source projects:
 ## Citation
 If you find our works useful for your research, please consider citing:
 ```
-
+@misc{zhu2025shuffler1,
+      title={Shuffle-R1: Efficient RL framework for Multimodal Large Language Models via Data-centric Dynamic Shuffle}, 
+      author={Linghao Zhu, Yiran Guan, Dingkang Liang, Jianzhong Ju, Zhenbo Luo, Bin Qin, Jian Luan, Yuliang Liu, Xiang Bai},
+      year={2025},
+      eprint={2508.05612},
+      archivePrefix={arXiv},
+      primaryClass={cs.LG},
+      url={https://arxiv.org/abs/2508.05612}, 
+}
 ```
