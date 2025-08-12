@@ -11,7 +11,7 @@
 Preview repository of **Shuffle-R1**.
 
 ## Introduction
-Shuffle-R1 is a a simple yet principled framework that improves RL fine-tuning efficiency by dynamically restructuring trajectory sampling and batch composition. It introduces two key modules:
+Shuffle-R1 is a simple yet principled framework that improves RL fine-tuning efficiency by dynamically restructuring trajectory sampling and batch composition. It introduces two key modules:
 
 - **Pairwise Trajectory Sampling (PTS)**
 - **Advantage-based Batch Shuffle (ABS)**
@@ -46,7 +46,7 @@ All models are evaluated under CoT prompt.
 ![Training and validation dynamics](assets/compare_with_grpo.png)
  - **Left:** Training accuracy of Shuffle-R1 compared with GRPO. 
  - **Middle:** Validation accuracy of Shuffle-R1 compared with GRPO. Our framework achieves superior performance against GRPO with only half of the trainin steps. 
- - ***Right:** Rollouts ratio with nonzero gradient. Our framework maintains very high ratio throughout the training process, showing better data efficiency compared with GRPO.
+ - **Right:** Rollouts ratio with nonzero gradient. Our framework maintains very high ratio throughout the training process, showing better data efficiency compared with GRPO.
 
 ## Try our model
 Coming soon.
