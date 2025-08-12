@@ -66,7 +66,7 @@ Our work benefit from the following open-source projects:
 - [NoisyRollout](https://github.com/NUS-TRAIL/NoisyRollout)
 
 ## Citation
-If you find our works useful for your research, please consider citing:
+If you find our work useful for your research, please consider citing:
 ```
 @misc{zhu2025shuffler1,
       title={Shuffle-R1: Efficient RL framework for Multimodal Large Language Models via Data-centric Dynamic Shuffle}, 
