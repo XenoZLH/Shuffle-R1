@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Shuffle-R1 - Project Page</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- MathJax for rendering LaTeX formulas -->
+    <script>
+      window.MathJax = {
+        tex: { inlineMath: [['$', '$'], ['\\(', '\\)']], displayMath: [['$$','$$'], ['\\[','\\]']] },
+        svg: { fontCache: 'global' }
+      };
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+    <style>
+        body { font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; background-color: #fafafa; }
+        .container { max-width: 1200px; padding: 2rem; }
+        h1 { font-weight: bold; margin-top: 1rem; }
+        .authors, .affiliation { font-size: 1.1rem; color: #555; }
+        .link-card { text-align: center; padding: 1rem; border-radius: 10px; color: white; font-weight: bold; transition: transform 0.2s; }
+        .link-card:hover { transform: scale(1.05); }
+        .github { background-color: #24292f; }
+        .arxiv { background-color: #b31b1b; }
+        .hf-model { background-color: #ff9f00; }
+        .hf-dataset { background-color: #0084ff; }
+        .section-title { font-weight: bold; font-size: 1.6rem; margin-top: 3rem; margin-bottom: 1rem; border-bottom: 3px solid #eee; padding-bottom: 0.4rem; }
+        .tldr { background: #eef6ff; padding: 1rem; border-left: 5px solid #0d6efd; margin-top: 1rem; font-style: italic; }
+        img { display: block; margin: 1.5rem auto; max-width: 100%; border-radius: 10px; }
+        table { background: white; }
+        th { background: #f8f9fa; }
+        pre { background: #f8f8f8; padding: 1rem; border-radius: 6px; overflow-x: auto; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 标题 -->
+        <div class="text-center">
+            <h1>Shuffle-R1: Efficient RL framework for Multimodal Large Language Models via Data-centric Dynamic Shuffle</h1>
+            <p class="authors">
+                Linghao Zhu<sup>1</sup>, 
+                Yiran Guan<sup>1</sup>, 
+                Dingkang Liang<sup>1</sup>, 
+                Jianzhong Ju<sup>2</sup>, 
+                Zhenbo Luo<sup>2</sup>, 
+                Bin Qin<sup>2</sup>, 
+                Jian Luan<sup>2</sup>, 
+                Yuliang Liu<sup>1</sup>, 
+                Xiang Bai<sup>1</sup>
+            </p>
+            <p class="affiliation">
+                <sup>1</sup>Huazhong University of Science and Technology<br>
+                <sup>2</sup>MiLM Plus, Xiaomi Inc.
+            </p>
+        </div>
+
+        <!-- 链接按钮区 -->
+        <div class="section-title">🔗 Links</div>
+        <div class="row g-3">
+            <div class="col-6 col-md-3">
+                <a href="https://github.com/XenoZLH/Shuffle-R1" target="_blank" class="link-card github d-block">GitHub</a>
+            </div>
+            <div class="col-6 col-md-3">
+                <a href="https://arxiv.org/abs/2508.05612" target="_blank" class="link-card arxiv d-block">arXiv</a>
+            </div>
+            <div class="col-6 col-md-3">
+                <a href="https://arxiv.org/abs/2508.05612" target="_blank" class="link-card hf-model d-block">HF Model</a>
+            </div>
+            <div class="col-6 col-md-3">
+                <a href="https://arxiv.org/abs/2508.05612" target="_blank" class="link-card hf-dataset d-block">HF Dataset</a>
+            </div>
+        </div>
+
+        <p>
+            <strong>Release:</strong> Our official code is undergoing internal review and is expected to be officially open-sourced within 1~2 weeks. We will open source model checkpoints, training data, training/inference/evaluation scripts and everything! Please stay tuned!
+        </p>
+
+
+        <!-- 摘要 -->
+        <div class="section-title">📄 Abstract</div>
+        <p>
+            Reinforcement learning (RL) has emerged as an effective post-training paradigm for enhancing the reasoning capabilities of multimodal large language model (MLLM). However, current RL pipelines often suffer from training inefficiencies caused by two underexplored issues: Advantage Collapsing, where most advantages in a batch concentrate near zero, and Rollout Silencing, where the proportion of rollouts contributing non-zero gradients diminishes over time. These issues lead to suboptimal gradient updates and hinder long-term learning efficiency. To address these issues, we propose Shuffle-R1, a simple yet principled framework that improves RL fine-tuning efficiency by dynamically restructuring trajectory sampling and batch composition. It introduces (1) Pairwise Trajectory Sampling, which selects high-contrast trajectories with large advantages to improve gradient signal quality, and (2) Advantage-based Trajectory Shuffle, which increases exposure of valuable rollouts through informed batch reshuffling. Experiments across multiple reasoning benchmarks show that our framework consistently outperforms strong RL baselines with minimal overhead. These results highlight the importance of data-centric adaptations for more efficient RL training in MLLM.
+        </p>
+        <div class="tldr">
+            <strong>TL;DR:</strong> We propose Shuffle-R1, a simple and effective RL post-training framework for MLLM that significantly improves RL training efficiency and model performance.
+        </div>
+
+
+        <!-- 方法介绍 -->
+        <div class="section-title">⚙ Method</div>
+        <figure>
+            <img src="assets/framework.png" alt="Framework Overview">
+            <figcaption class="text-center text-muted">Fig. 1: Framework Overview of Shuffle-R1</figcaption>
+        </figure>
+
+        <div class="subsection">
+            <h4 class="subsection-title">Pairwise Trajectory Sampling (PTS)</h4>
+
+            <p>
+                The goal of PTS is to mitigate the <em>Advantage Collapsing</em> issue, where most trajectory advantages are close to zero, by organizing candidate trajectories into contrastive pairs to enhance the signal quality of high-advantage trajectories.
+            </p>
+
+            <!-- 保留方程 -->
+            <div class="method-equation math-block">
+                <div>Given a query $q$ and rollout size of $2N$, the rollout trajectories group is denoted as $O = \{ o_i \}_{i=1}^{2N}$. We denote the sorted advantages set as:</div>
+
+                $$A_s = \{ \hat{A}_{(i)} \}_{i=1}^{2N}, \quad \text{where } \hat{A}_{(1)} \geq \hat{A}_{(2)} \geq \cdots \geq \hat{A}_{(2N)}.$$
+
+                <div>Based on this ordering, we can construct the pairing set as:</div>
+
+                $$P = \{ (o_{(i)}, o_{(2N - i + 1)}) \}_{i=1}^{N}.$$
+
+                <div>We apply a simple top-k sampling strategy to select a subset of valid pairs $P_v$ from $P$.</div>
+
+                $$P_v = \{ (o_{(i)}, o_{(2N - i + 1)}) \}_{i=1}^{M}, \quad M = \alpha N,\ \alpha \in (0,1).$$
+            </div>
+
+            <p>
+                Without significantly increasing the computational cost, PTS selects pairs of tracks with strong contrast and rich gradient information from a larger exploration space to improve the effectiveness of policy gradients and improve data utilization.
+            </p>
+        </div>
+
+        <!-- Advantage-based Batch Shuffle -->
+        <div class="subsection">
+            <h4 class="subsection-title">Advantage-based Batch Shuffle (ABS)</h4>
+
+            <p>
+                To mitigate the <em>Rollout Silencing</em> issue, we introduce ABS, which reorders the training batch dynamically based on the advantages of the paired trajectories.
+            </p>
+
+            <!-- 保留方程 -->
+            <div class="method-equation math-block">
+                <div>Denote the original batch as:</div>
+
+                $$B = \{ p_i^g=(o_{i,1}^g, \hat{A}_{i,1}^g, o_{i,2}^g, \hat{A}_{i,2}^g, q^g) \}_{i=1\ldots M,\ g=1\ldots G},$$
+
+                <div>The batch size is $M\times G$ and will be divided into $K$ smaller batches in standard updates.</div>
+
+                <div>For each trajectory pair $p_j$, we assign a importance weight:</div>
+
+                $$W(p_j) = |\hat{A}_{j,1}| + |\hat{A}_{j,2}|.$$
+
+                <div>Then, the sampling probability of $p_j$ is:</div>
+
+                $$\Phi(p_j) = \frac{W(p_j)}{\sum_{k=1}^{|P_v|} W(p_k)}.$$
+
+                <div>Based on the sampling probability, we perform $S$ sub-sampling from the original batch $B$ with each sample having a capacity of $T$ pairs (i.e., $2T$ trajectories):</div>
+
+                $$B_s = \{ p_{s,t} \}_{t=1}^{T}, \quad \text{s.t. } p_{s,t} \neq p_{s,t'} , \forall\, t \neq t'.$$
+
+                <div>We merge all sub-sampling batches to obtain the shuffled batch:</div>
+
+                $$B' = \bigcup_{s=1}^S B_s, \quad \text{and } |B'| = |B|,\ \text{i.e., } S \times T = MG.$$
+            </div>
+
+            <p>
+                By introducing ABS, we transform the batch distribution to a "soft-prioritized" structure, maintaining diversity while exposing high-value samples multiple times, thus enhancing data utilization and mitigating Rollout Silencing.
+            </p>
+        </div>
+
+
+        <!-- 实验性能 -->
+        <div class="section-title">📊 Performance</div>
+        <h4 class="subsection-title">Performance Overview</h4>
+        <p><strong>Table 1:</strong> Performance of Shuffle-R1.</p>
+        <table class="table table-bordered text-center">
+            <thead>
+                <tr>
+                    <th>Model</th>
+                    <th>MathVerse</th>
+                    <th>MathVision</th>
+                    <th>MathVista(mini)</th>
+                    <th>WeMath(loose)</th>
+                    <th>HallusionBench</th>
+                    <th>ChartQA</th>
+                    <th>Average</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Qwen2.5-VL-3B</td>
+                    <td>34.8</td>
+                    <td>21.9</td>
+                    <td>58.4</td>
+                    <td>51.7</td>
+                    <td>59.8</td>
+                    <td>73.1</td>
+                    <td>49.9</td>
+                </tr>
+                <tr>
+                    <td>Qwen2.5-VL-7B</td>
+                    <td>42.6</td>
+                    <td>25.8</td>
+                    <td>67.4</td>
+                    <td>63.5</td>
+                    <td>65.2</td>
+                    <td>79.8</td>
+                    <td>57.4</td>
+                </tr>
+                <tr class="table-success">
+                    <td>Shuffle-R1-3B</td>
+                    <td><strong>44.2</strong></td>
+                    <td><strong>26.8</strong></td>
+                    <td><strong>70.4</strong></td>
+                    <td><strong>66.5</strong></td>
+                    <td><strong>69.2</strong></td>
+                    <td><strong>79.9</strong></td>
+                    <td><strong>59.5</strong></td>
+                </tr>
+                <tr class="table-success">
+                    <td>Shuffle-R1-7B</td>
+                    <td><strong>53.9</strong></td>
+                    <td><strong>30.0</strong></td>
+                    <td><strong>77.0</strong></td>
+                    <td><strong>72.3</strong></td>
+                    <td><strong>71.0</strong></td>
+                    <td><strong>84.1</strong></td>
+                    <td><strong>64.7</strong></td>
+                </tr>
+            </tbody>
+        </table>
+        <p>All models are evaluated under CoT prompt.</p>
+
+        <h4 class="subsection-title">Comparison with GRPO</h4>
+        <figure>
+            <img src="assets/compare_with_grpo.png" alt="Comparison with GRPO">
+            <figcaption class="text-center text-muted">Fig. 2: Training dynamics of Shuffle-R1.</figcaption>
+        </figure>
+        <p><strong>Left: </strong>Training accuracy of Shuffle-R1 compared with GRPO.</p>
+        <p><strong>Middle: </strong>Validation accuracy of Shuffle-R1 compared with GRPO. Our framework achieves superior performance against GRPO with only half of the trainin steps.</p>
+        <p><strong>Right: </strong>Rollouts ratio with nonzero gradient. Our framework maintains very high ratio throughout the training process, showing better data efficiency compared with GRPO.</p>
+
+
+        <!-- 致谢 -->
+         <div class="section-title">🙏 Acknowledgment</div>
+        <p>Our work benefits from the following open-source projects:</p>
+        <ul>
+            <li><a href="https://github.com/QwenLM/Qwen2.5-VL" target="_blank" rel="noopener noreferrer">Qwen2.5-VL</a></li>
+            <li><a href="https://github.com/hiyouga/EasyR1" target="_blank" rel="noopener noreferrer">EasyR1</a></li>
+            <li><a href="https://github.com/ModalMinds/MM-EUREKA" target="_blank" rel="noopener noreferrer">MM-EUREKA</a></li>
+            <li><a href="https://github.com/NUS-TRAIL/NoisyRollout" target="_blank" rel="noopener noreferrer">NoisyRollout</a></li>
+        </ul>
+
+
+        <!-- 引用区 -->
+        <div class="section-title">📚 Citation</div>
+<pre>
+@misc{zhu2025shuffler1,
+    title={Shuffle-R1: Efficient RL framework for Multimodal Large Language Models via Data-centric Dynamic Shuffle}, 
+    author={Linghao Zhu, Yiran Guan, Dingkang Liang, Jianzhong Ju, Zhenbo Luo, Bin Qin, Jian Luan, Yuliang Liu, Xiang Bai},
+    year={2025},
+    eprint={2508.05612},
+    archivePrefix={arXiv},
+    primaryClass={cs.LG},
+    url={https://arxiv.org/abs/2508.05612}, 
+}
+</pre>
+    </div>
+</body>
+</html>
