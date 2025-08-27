@@ -12,6 +12,8 @@ Preview repository of **Shuffle-R1**.
 
 **Project website**: [https://xenozlh.github.io/Shuffle-R1/](https://xenozlh.github.io/Shuffle-R1/)
 
+**Official repository**: [https://github.com/xiaomi-research/shuffle-r1](https://github.com/xiaomi-research/shuffle-r1) Check the official repository for more details!
+
 ## Introduction
 Shuffle-R1 is a simple yet principled framework that improves RL fine-tuning efficiency by dynamically restructuring trajectory sampling and batch composition. It introduces two key modules:
 
